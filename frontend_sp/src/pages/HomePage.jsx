@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [stories, setStories] = useState([]);
-
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   useEffect(() => {
     const fetchStories = async () => {
         const token = localStorage.getItem("token");  //Retrive token from Local Storage
         console.log('Retrieved Token:', token);
       try {
-        const response = await axios.get("http://localhost:3000/api/stories/view",{
+        const response = await axios.get(`${apiUrl}/api/stories/view`,{
             headers: {
                 Authorization: `Bearer ${token}`, // Attach the token in the Authorization header
               },

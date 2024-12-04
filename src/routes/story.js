@@ -53,18 +53,17 @@ router.post('/:storyId/add-part',authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Error adding part' });
   }
 });
-router.get('/:storyId', async (req, res) => {
+router.get('/story/:storyId',authenticateToken, async (req, res) => {
   const { storyId } = req.params;
-
   try {
-    const story = await db('content').where({ id: storyId }).first();
+    const story = await db('stories').where({ id: storyId }).first();
     if (!story) {
       return res.status(404).json({ message: 'Story not fetched correctly.' });
     }
 
     res.json({ story });
   } catch (err) {
-    console.error(err);
+    console.error(err);``
     res.status(500).json({ message: 'Error fetching story details' });
   }
 });
@@ -98,7 +97,7 @@ router.get('/view', async (req, res) => {
     const stories = await db('stories').select('*');
     res.json(stories);
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json({ message: 'Error fetching stories in story.js' });
   }
 });

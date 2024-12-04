@@ -4,6 +4,7 @@ import axios from "axios";
 const Signup = () => {
   const [formData, setFormData] = useState({ email: "", username: "", password: "" });
   const [message, setMessage] = useState("");
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,7 +14,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/signup", formData);
+      const response = await axios.post(`${apiUrl}/api/auth/signup`, formData);
       localStorage.setItem("token", response.data.token); // Store JWT
       setMessage("Signup successful! You can now log in.");
     } catch (error) {

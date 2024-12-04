@@ -5,12 +5,15 @@ import { useParams } from "react-router-dom";
 const StoryPage = () => {
   const { storyId } = useParams();
   const [story, setStory] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [part, setPart] = useState(null);
+  // const [comments, setComments] = useState([]);
+  // const [part, setPart] = useState(null);
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
+
     const fetchStoryDetails = async () => {
       try {
+        
         const token = localStorage.getItem("token"); // Retrieve token from localStorage
         
         // Config for headers
@@ -20,19 +23,23 @@ const StoryPage = () => {
           },
         };
         const storyResponse = await axios.get(
-          `http://localhost:3000/api/stories/${storyId}`
+          `${apiUrl}/api/stories/story/${storyId}`,
+          config
         );
-        setStory(storyResponse.data);
+        console.log("Story Response:", storyResponse.data.story);
+        setStory(storyResponse.data.story);
 
-        const commentsResponse = await axios.get(
-          `http://localhost:3000/comments/${storyId}`
-        );
-        setComments(commentsResponse.data);
+        // const commentsResponse = await axios.get(
+        //   `${apiUrl}/comments/${storyId}`,
+        //   config
+        // );
+        // setComments(commentsResponse.data);
 
-        const partResponse = await axios.get(
-          `http://localhost:3000/parts/${storyId}`
-        );
-        setPart(partResponse.data);
+        // const partResponse = await axios.get(
+        //   `${apiUrl}/parts/${storyId}`,
+        //   config
+        // );
+        // setPart(partResponse.data);
       } catch (error) {
         console.error("Error fetching story details:", error);
       }
@@ -43,14 +50,14 @@ const StoryPage = () => {
   return (
     <div>
       {story && <h1>{story.title}</h1>}
-      {part && <div>{part.content}</div>}
+      {story && <div>{story.content}</div>}
 
       <h2>Comments</h2>
-      <ul>
+      {/* <ul>
         {comments.map((comment) => (
           <li key={comment.id}>{comment.content}</li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
